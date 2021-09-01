@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autoconfigure: true
+    public: false
+    autowire: true
+
+  Rinsvent\RedisManagerBundle\Service\:
+    resource: ../../Service/
+
+  Predis\Client:
+    arguments:
+      - '%env(REDIS_URL)%'
