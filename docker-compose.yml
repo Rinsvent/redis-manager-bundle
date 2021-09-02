@@ -9,6 +9,14 @@ services:
         environment:
             USE_COMPOSER_SCRIPTS: 0
             PHP_IDE_CONFIG: "serverName=redis_managerbundle_php"
+        depends_on:
+            - redis_managerbundle_redis
+    redis_managerbundle_redis:
+        image: dh.rinsvent.ru/redis
+        container_name: redis_managerbundle_redis
+        volumes:
+            - ../redis_managerbundle_data/redis:/data
+        command: redis-server --requirepass password123
 
 networks:
     default:
