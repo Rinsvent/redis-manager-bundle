@@ -16,9 +16,9 @@ class RedisHelperService
         $this->rc = $rc;
     }
 
-    public function lock(string $key)
+    public function lock(string $key, ?int $seconds = null)
     {
-        if (!$this->rc->set($key, 1, 'EX', self::TTL, 'NX')) {
+        if (!$this->rc->set($key, 1, 'EX', $seconds ?? self::TTL, 'NX')) {
             throw new Lock();
         }
     }

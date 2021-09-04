@@ -2,6 +2,9 @@
 
 namespace Rinsvent\RedisManagerBundle\Tests;
 
+use Predis\Client;
+use Rinsvent\RedisManagerBundle\Service\RedisHelperService;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -24,4 +27,9 @@ class UnitTester extends \Codeception\Actor
     /**
      * Define custom actions here
      */
+    public function grabRedisHelperService()
+    {
+        $client = new Client('tcp://redis_managerbundle_redis:6379?password=password123');
+        return new RedisHelperService($client);
+    }
 }
