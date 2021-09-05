@@ -4,8 +4,10 @@ namespace Rinsvent\RedisManagerBundle\Service\Encoder;
 
 use Rinsvent\RedisManagerBundle\Attribute\EncodeOptions;
 
-class PlainEncoder
+class PlainEncoder extends AbstractEncoder
 {
+    public const FORMAT = 'plain';
+
     public function encode(object $object, EncodeOptions $encodeOptions): string
     {
         return $object->{'get' . ucfirst($encodeOptions->property)}();

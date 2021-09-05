@@ -24,15 +24,7 @@ class RedisManager
         /** @var Key $ttl */
         $key = (new ClassExtractor($object::class))->fetch(Key::class);
         $key = $this->keyFiller->fill($key->path, $object);
-
-        $storeValue = $this->store[$object::class][$key] ?? null;
-        $currentValue = $this->toPersist[$object::class][$key] ?? null;
-        if (!$storeValue || $storeValue !== $currentValue) {
-            $this->toPersist[$object::class][$key] = $object;
-        }
-        if (!$storeValue) {
-            $this->store[$object::class][$key] = $object;
-        }
+        $this->toPersist[$object::class][$key] = $object;
     }
 
     public function flush()
@@ -45,24 +37,22 @@ class RedisManager
             foreach ($items as $key => $item) {
                 $value = $this->encoder->encode($item, $encodeOptions);
                 $this->rc->set($key, $value, 'EX', $ttl->seconds);
-                $this->putToStore($item);
             }
         }
     }
 
-    protected function putToStore(object $object): void
+    public function find(object $object): ?object
     {
         /** @var Key $ttl */
         $key = (new ClassExtractor($object::class))->fetch(Key::class);
         $key = $this->keyFiller->fill($key->path, $object);
-        $this->store[$object::class][$key] = $object;
-    }
-
-    public function getFromStore(object $object): ?object
-    {
-        /** @var Key $ttl */
-        $key = (new ClassExtractor($object::class))->fetch(Key::class);
-        $key = $this->keyFiller->fill($key->path, $object);
-        return $this->store[$object::class][$key] ?? null;
+        if ($data = $this->rc->get($key)) {
+            /** @var EncodeOptions $encodeOptions */
+            if (!$encodeOptions = (new ClassExtractor($object::class))->fetch(EncodeOptions::class)) {
+                throw new \Exception('EncodeOptions meta info not found');
+            }
+            return $this->encoder->decode($object, $data, $encodeOptions);
+        }
+        return null;
     }
 }

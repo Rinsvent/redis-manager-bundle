@@ -4,8 +4,10 @@ namespace Rinsvent\RedisManagerBundle\Service\Encoder;
 
 use Rinsvent\RedisManagerBundle\Attribute\EncodeOptions;
 
-class JsonEncoder
+class JsonEncoder extends AbstractEncoder
 {
+    public const FORMAT = 'json';
+
     public function encode(object $object, EncodeOptions $encodeOptions): string
     {
         $result = [];

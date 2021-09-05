@@ -10,3 +10,11 @@ services:
   Predis\Client:
     arguments:
       - '%env(REDIS_URL)%'
+
+  Rinsvent\RedisManagerBundle\Service\Encoder:
+    bind:
+      $encoderLocator: !tagged_locator { tag: 'rinsvent.redis_manager.encoder', index_by: 'key', default_index_method: 'getLocatorKey' }
+
+  _instanceof:
+    Rinsvent\RedisManagerBundle\Service\Encoder\AbstractEncoder:
+      tags: [ 'rinsvent.redis_manager.encoder' ]

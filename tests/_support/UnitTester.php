@@ -3,7 +3,9 @@
 namespace Rinsvent\RedisManagerBundle\Tests;
 
 use Predis\Client;
+use Rinsvent\RedisManagerBundle\Service\Encoder;
 use Rinsvent\RedisManagerBundle\Service\RedisHelperService;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
  * Inherited Methods
@@ -31,5 +33,11 @@ class UnitTester extends \Codeception\Actor
     {
         $client = new Client('tcp://redis_managerbundle_redis:6379?password=password123');
         return new RedisHelperService($client);
+    }
+
+    public function grabEncoderService()
+    {
+        $encoderLocator = new ServiceLocator([]);
+        return new Encoder($encoderLocator);
     }
 }
