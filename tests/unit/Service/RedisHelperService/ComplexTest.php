@@ -1,11 +1,9 @@
 <?php
 
-namespace Rinsvent\DTO2Data\Tests\Service\RedisHelperService;
+namespace Rinsvent\RedisManagerBundle\Tests\Service\RedisHelperService;
 
 
-use Predis\Client;
 use Rinsvent\RedisManagerBundle\Exception\Lock;
-use Rinsvent\RedisManagerBundle\Service\RedisHelperService;
 
 class ComplexTest extends \Codeception\Test\Unit
 {

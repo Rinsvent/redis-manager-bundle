@@ -37,7 +37,14 @@ class UnitTester extends \Codeception\Actor
 
     public function grabEncoderService()
     {
-        $encoderLocator = new ServiceLocator([]);
+        $encoderLocator = new ServiceLocator([
+            'redis.encoder.json' => function (ServiceLocator $serviceLocator) {
+                return new Encoder\JsonEncoder();
+            },
+            'redis.encoder.plain' => function (ServiceLocator $serviceLocator) {
+                return new Encoder\PlainEncoder();
+            },
+        ]);
         return new Encoder($encoderLocator);
     }
 }

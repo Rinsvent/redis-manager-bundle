@@ -12,7 +12,9 @@
         "rinsvent/exception": "^0.0.1",
         "rinsvent/attribute-extractor": "^0.0.4",
         "predis/predis": "^1.1",
-        "symfony/http-kernel": "^5.3"
+        "symfony/http-kernel": "^5.3",
+        "rinsvent/dto2data": "^0.0.5",
+        "rinsvent/data2dto": "^0.0.16"
     },
     "require-dev": {
         "codeception/codeception": "^4.1",

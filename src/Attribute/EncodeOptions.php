@@ -7,14 +7,10 @@ class EncodeOptions
 {
     const
         FORMAT_JSON = 'json',
-        FORMAT_PLAIN = 'plain',
-        TARGET_PROPERTY = 'property',
-        TARGET_FIELDS = 'fields';
+        FORMAT_PLAIN = 'plain';
 
     public function __construct(
         public string $format = self::FORMAT_JSON,
-        public string $target = self::TARGET_FIELDS,
         public ?string $property = null,
-        public array $fields = [],
     ) {}
 }

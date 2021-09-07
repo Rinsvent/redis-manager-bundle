@@ -10,12 +10,33 @@ class PlainEncoder extends AbstractEncoder
 
     public function encode(object $object, EncodeOptions $encodeOptions): string
     {
-        return $object->{'get' . ucfirst($encodeOptions->property)}();
+        $reflectionProperty = new \ReflectionProperty($object, $encodeOptions->property);
+        if (!$reflectionProperty->isInitialized()) {
+            return '';
+        }
+        if (!$reflectionProperty->isPublic()) {
+            $reflectionProperty->setAccessible(true);
+        }
+        $value = $reflectionProperty->getValue($object);
+        if (!$reflectionProperty->isPublic()) {
+            $reflectionProperty->setAccessible(false);
+        }
+        return $value;
     }
 
     public function decode(object $object, string $data, EncodeOptions $encodeOptions): object
     {
-        $object->{'set' . ucfirst($encodeOptions->property)}($data);
+        $reflectionProperty = new \ReflectionProperty($object, $encodeOptions->property);
+        if (!$reflectionProperty->isInitialized()) {
+            return $object;
+        }
+        if (!$reflectionProperty->isPublic()) {
+            $reflectionProperty->setAccessible(true);
+        }
+        $reflectionProperty->setValue($object, $data);
+        if (!$reflectionProperty->isPublic()) {
+            $reflectionProperty->setAccessible(false);
+        }
         return $object;
     }
 }

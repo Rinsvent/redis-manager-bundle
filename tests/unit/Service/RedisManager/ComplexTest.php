@@ -1,6 +1,6 @@
 <?php
 
-namespace Rinsvent\DTO2Data\Tests\Service\RedisManager;
+namespace Rinsvent\RedisManagerBundle\Tests\Service\RedisManager;
 
 
 class ComplexTest extends \Codeception\Test\Unit
