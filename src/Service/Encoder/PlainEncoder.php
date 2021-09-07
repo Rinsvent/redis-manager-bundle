@@ -11,7 +11,7 @@ class PlainEncoder extends AbstractEncoder
     public function encode(object $object, EncodeOptions $encodeOptions): string
     {
         $reflectionProperty = new \ReflectionProperty($object, $encodeOptions->property);
-        if (!$reflectionProperty->isInitialized()) {
+        if (!$reflectionProperty->isInitialized($object)) {
             return '';
         }
         if (!$reflectionProperty->isPublic()) {
