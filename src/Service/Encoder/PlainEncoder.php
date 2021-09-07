@@ -27,9 +27,6 @@ class PlainEncoder extends AbstractEncoder
     public function decode(object $object, string $data, EncodeOptions $encodeOptions): object
     {
         $reflectionProperty = new \ReflectionProperty($object, $encodeOptions->property);
-        if (!$reflectionProperty->isInitialized()) {
-            return $object;
-        }
         if (!$reflectionProperty->isPublic()) {
             $reflectionProperty->setAccessible(true);
         }

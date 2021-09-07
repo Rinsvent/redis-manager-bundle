@@ -33,4 +33,19 @@ class ComplexTest extends \Codeception\Test\Unit
         $data = $encoder->encode($test, new EncodeOptions(PlainEncoder::FORMAT, 'lastname'));
         $this->assertEquals('lastname', $data);
     }
+
+    public function testJsonDecoder()
+    {
+        $encoder = $this->tester->grabEncoderService();
+        $test = new Test();
+        $test->name = 'name';
+
+        $data = $encoder->decode($test, 'lastname2', new EncodeOptions(PlainEncoder::FORMAT, 'lastname'));
+
+        $expectedData = new Test();
+        $expectedData->name = 'name';
+        $expectedData->lastname = 'lastname2';
+
+        $this->assertEquals($expectedData, $data);
+    }
 }
