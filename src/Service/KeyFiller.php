@@ -2,6 +2,8 @@
 
 namespace Rinsvent\RedisManagerBundle\Service;
 
+use ReflectionProperty;
+
 class KeyFiller
 {
     public function fill(string $key, object $object): string
@@ -10,7 +12,19 @@ class KeyFiller
             $marks = $matches[0] ?? [];
             foreach ($marks as $index => $mark) {
                 $markCode = $matches[1][$index] ?? null;
-                $markValue = $object->{'get' . ucfirst($markCode)}();
+
+                $markValue = null;
+                $reflectionProperty = new ReflectionProperty($object, $markCode);
+                if ($reflectionProperty->isInitialized($object)) {
+                    if (!$reflectionProperty->isPublic()) {
+                        $reflectionProperty->setAccessible(true);
+                    }
+                    $markValue = $reflectionProperty->getValue($object);
+                    if (!$reflectionProperty->isPublic()) {
+                        $reflectionProperty->setAccessible(false);
+                    }
+                }
+
                 $key = strtr($key, [
                     $mark => $markValue
                 ]);

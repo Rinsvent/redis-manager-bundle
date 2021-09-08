@@ -32,6 +32,9 @@ class RedisManager
         foreach ($this->toPersist as $class => $items) {
             /** @var Ttl $ttl */
             $ttl = (new ClassExtractor($class))->fetch(Ttl::class);
+            if (!$ttl) {
+                throw new \Exception('Ttl not found');
+            }
             /** @var EncodeOptions $encodeOptions */
             $encodeOptions = (new ClassExtractor($class))->fetch(EncodeOptions::class);
             foreach ($items as $key => $item) {

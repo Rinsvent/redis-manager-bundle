@@ -4,7 +4,9 @@ namespace Rinsvent\RedisManagerBundle\Tests;
 
 use Predis\Client;
 use Rinsvent\RedisManagerBundle\Service\Encoder;
+use Rinsvent\RedisManagerBundle\Service\KeyFiller;
 use Rinsvent\RedisManagerBundle\Service\RedisHelperService;
+use Rinsvent\RedisManagerBundle\Service\RedisManager;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
@@ -29,10 +31,14 @@ class UnitTester extends \Codeception\Actor
     /**
      * Define custom actions here
      */
+    public function grabClient()
+    {
+        return new Client('tcp://redis_managerbundle_redis:6379?password=password123');
+    }
+
     public function grabRedisHelperService()
     {
-        $client = new Client('tcp://redis_managerbundle_redis:6379?password=password123');
-        return new RedisHelperService($client);
+        return new RedisHelperService($this->grabClient());
     }
 
     public function grabEncoderService()
@@ -46,5 +52,10 @@ class UnitTester extends \Codeception\Actor
             },
         ]);
         return new Encoder($encoderLocator);
+    }
+
+    public function grabRedisManager()
+    {
+        return new RedisManager($this->grabClient(), $this->grabEncoderService(), new KeyFiller());
     }
 }
