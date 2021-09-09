@@ -8,7 +8,12 @@ services:
             - ./:/app
         environment:
             USE_COMPOSER_SCRIPTS: 0
-
+        depends_on:
+            - redis_managerbundle_redis
+    redis_managerbundle_redis:
+        image: dh.rinsvent.ru/redis
+        container_name: redis_managerbundle_redis
+        command: redis-server --requirepass password123
 networks:
     default:
         external:
